@@ -1,0 +1,15 @@
+<div class="angucomplete-holder">
+    <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-keyup="keyPressed($event)" />
+    <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">
+        <div class="angucomplete-searching" ng-show="searching">Searching...</div>
+        <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div>
+        <div class="tag" ng-if="companies && companies != \'\'">Companies</div>
+        <div class="angucomplete-row" ng-repeat="company in companies">
+        	<div>{{company}}</div>
+        </div>
+		<div class="tag" ng-if="people && people != \'\'">People</div>
+        <div class="angucomplete-row" ng-repeat="person in people">
+        	<div>{{person}}</div>
+        </div>
+    </div>
+</div>

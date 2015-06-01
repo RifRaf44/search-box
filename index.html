@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="searchbox">
+<head>
+    <title></title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+</head>
+<body ng-controller = 'MainCtrl'>
+
+    <angucomplete id="ex1"
+                  placeholder="Search people"
+                  pause="0"
+                  selectedobject="selectedPerson"
+                  localdata="people"
+                  searchfields="first_name,last_name,company"
+                  titlefield="first_name,last_name"
+                  descriptionField="company"
+                  minlength="1"
+                  inputclass="form-control form-control-small"
+                  class="flexcontainer center"></angucomplete>
+</body>
+<script src="js/jquery-1.11.3.min.js"></script>
+<script src="js/from.src.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="app/app.js"></script>
+<script src="app/directives/angucomplete.js"></script>
+<script src="app/util/uniqueObjects.js"></script>
+</html>

@@ -1,0 +1,47 @@
+body {
+  padding: 50px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: lighter;
+}
+.container {
+  margin: auto;
+}
+.flexcontainer {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+}
+.flexcontainer.center {
+  align-items: center;
+  justify-content: center;
+}
+.box {
+  background-color: orange;
+  padding: 10px;
+  border: solid #000000 1px;
+}
+.angucomplete-holder {
+  min-width: 480px;
+}
+.angucomplete-row:hover {
+  background-color: lightblue;
+  color: #ffffff;
+  cursor: pointer;
+}
+#ex1_value {
+  padding: 10px;
+  min-width: 480px;
+}
+#ex1_dropdown {
+  border: 2px inset;
+  border-top: none;
+  padding: 10px;
+}
+.tag {
+  font-weight: bolder;
+}
+.tag:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
