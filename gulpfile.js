@@ -1,7 +1,7 @@
 var less = require('gulp-less');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-gutil.log('Hello world!');
+var webserver = require('gulp-webserver');
 
 gulp.task('compileLess', function () {
 
@@ -16,4 +16,14 @@ gulp.task('compileLess', function () {
 
 gulp.task('watch', function () {
     gulp.watch('./less/*.less', ['compileLess']);
+});
+
+
+
+gulp.task('webserver', function() {
+    gulp.src('.')
+        .pipe(webserver({
+            livereload: true,
+            open: true
+        }));
 });

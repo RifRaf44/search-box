@@ -2,8 +2,11 @@
 <html ng-app="searchbox">
 <head>
     <title></title>
+    <link rel="stylesheet" href="./css/font-awesome.css"/>
+    <link rel="stylesheet" href="./css/bootstrap.css"/>
     <link rel="stylesheet" href="./css/style.css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body ng-controller = 'MainCtrl'>
 
@@ -12,6 +15,7 @@
                   pause="0"
                   selectedobject="selectedPerson"
                   localdata="people"
+                  companies="companies"
                   searchfields="first_name,last_name,company"
                   titlefield="first_name,last_name"
                   descriptionField="company"

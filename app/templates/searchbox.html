@@ -1,15 +1,28 @@
-<div class="angucomplete-holder">
-    <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-keyup="keyPressed($event)" />
-    <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">
-        <div class="angucomplete-searching" ng-show="searching">Searching...</div>
-        <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div>
-        <div class="tag" ng-if="companies && companies != \'\'">Companies</div>
-        <div class="angucomplete-row" ng-repeat="company in companies">
-        	<div>{{company}}</div>
+<div class="angucomplete-holder flexcontainer center">
+    <div class="full-width">
+        <div class="input-group">
+            <a class="input-group-addon" ng-click="filterOpen = !filterOpen"><i class="fa fa-filter"></i></a>
+            <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}} form-control"  ng-keyup="keyPressed($event)"  />
         </div>
-		<div class="tag" ng-if="people && people != \'\'">People</div>
-        <div class="angucomplete-row" ng-repeat="person in people">
-        	<div>{{person}}</div>
+        <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">
+            <div class="angucomplete-searching" ng-show="searching">Searching...</div>
+            <div class="angucomplete-searching" ng-show="!searching && (!people || people.length==0)">No results found</div>
+            <!--<div class="tag" ng-click="selectTag('company')" ng-if="companies.length > 0">Companies</div>-->
+            <!--<div class="angucomplete-row" ng-repeat="company in companies" ng-mousedown="selectCompany(company)">-->
+                <!--<div>{{company.company}}</div>-->
+            <!--</div>-->
+            <div class="tag" ng-click="selectTag('people')" ng-show="people.length > 0">People</div>
+            <div class="angucomplete-row" ng-repeat="person in people" ng-mousedown="selectPerson(person)">
+                <div>{{person.first_name + ' ' + person.last_name}}</div>
+            </div>
+        </div>
+        <div id="filter" ng-show="filterOpen">
+            <input id="companyFilter" type="text" placeholder="company" ng-model="filterStr"/>
+            <div ng-repeat="company in companies | filter:{company: filterStr}" class="form-inline form-group" >
+                <input id="company_{{company.id}}" ng-change="toggle(company)" ng-model="company.checked" type="checkbox" class="form-control"/>
+                <label for="company_{{company.id}}">{{company.company}}</label>
+            </div>
         </div>
     </div>
+
 </div>

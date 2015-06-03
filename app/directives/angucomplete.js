@@ -5,7 +5,7 @@
  */
 
 angular.module('searchbox')
-    .directive('angucomplete', function ($parse, $http) {
+    .directive('angucomplete', function ($parse, $http, $timeout) {
     return {
         restrict: 'EA',
         scope: {
@@ -19,10 +19,11 @@ angular.module('searchbox')
             "inputClass": "@inputclass",
             "userPause": "@pause",
             "localData": "=localdata",
+            "companies": "=companies",
             "searchFields": "@searchfields",
             "minLengthUser": "@minlength"
         },
-        template: '<div class="angucomplete-holder"> <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-keyup="keyPressed($event)"/> <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown"> <div class="angucomplete-searching" ng-show="searching">Searching...</div><div class="angucomplete-searching" ng-show="!searching && (!results || results.length==0)">No results found</div><div class="tag" ng-click="selectTag(\'company\')" ng-if="companies.length > 0">Companies</div><div class="angucomplete-row" ng-repeat="company in companies" ng-click="selectCompany(company.id)"> <div>{{company.company}}</div></div><div class="tag" ng-click="selectTag(\'people\')" ng-if="people.length > 0">People</div><div class="angucomplete-row" ng-repeat="person in people" ng-click="selectPerson()"> <div>{{person.first_name + \' \' + person.last_name}}</div></div></div></div>',
+        templateUrl: 'app/templates/searchbox.html',
         controller: function ( $scope ) {
             $scope.lastFoundWord = null;
             $scope.currentIndex = null;
@@ -31,6 +32,7 @@ angular.module('searchbox')
             $scope.searching = false;
             $scope.pause = 500;
             $scope.minLength = 3;
+            $scope.filterOpen;
 
             if ($scope.minLengthUser && $scope.minLengthUser != "") {
                 $scope.minLength = $scope.minLengthUser;
@@ -43,112 +45,122 @@ angular.module('searchbox')
             $scope.processResults = function(responseData) {
                 if (responseData && responseData.length > 0) {
                     $scope.results = [];
-                    var companies = [] , people = [], calculations = [];
+                    // var companies = []
+                    var people = [], calculations = [];
 
-                    $scope.companies = responseData.uniqueObjects(["companyId"]);
-                    from($scope.companies).take(4).each(function(obj){
-                        companies.push(obj);
-                    });
+                    //$scope.companies = responseData.uniqueObjects(["companyId"]);
+                    //from($scope.companies).take(4).each(function(obj){
+                    //    companies.push(obj);
+                    //});
 
-                    from(responseData).take(4).each(function(obj){
+                    from(responseData).take(7).each(function(obj){
                         people.push(obj);
                     });
 
-                    $scope.companies = companies;
+                    //$scope.companies = companies;
                     $scope.people = people;
-
-                    var titleFields = [];
-                    if ($scope.titleField && $scope.titleField != "") {
-                        titleFields = $scope.titleField.split(",");
-                    }
-
-                    for (var i = 0; i < responseData.length; i++) {
-                        // Get title variables
-                        var titleCode = "";
-
-                        for (var t = 0; t < titleFields.length; t++) {
-                            if (t > 0) {
-                                titleCode = titleCode +  " + ' ' + ";
-                            }
-                            titleCode = titleCode + "responseData[i]." + titleFields[t];
-                        }
-
-                        // Figure out description
-                        var description = "";
-
-                        if ($scope.descriptionField && $scope.descriptionField != "") {
-                            eval("description = responseData[i]." + $scope.descriptionField);
-                        }
-
-                        // Figure out image
-                        var image = "";
-
-                        if ($scope.imageField && $scope.imageField != "") {
-                            eval("image = responseData[i]." + $scope.imageField);
-                        }
-
-                        var resultRow = {
-                            title: eval(titleCode),
-                            description: description,
-                            image: image,
-                            originalObject: responseData[i]
-                        }
-
-                        $scope.results[$scope.results.length] = resultRow;
-                    }
 
 
                 } else {
-                    $scope.results = [];
-                    $scope.companies = [];
+                    //$scope.companies = [];
                     $scope.people = [];
                 }
             }
 
-            $scope.searchTimerComplete = function(str) {
+            $scope.search = function(str, searchFields) {
                 // Begin the search
+                // init filteredResults if Necessary
+                $scope.filteredResults = $scope.filteredResults || $scope.localData;
 
                 if (str.length >= $scope.minLength) {
-                    if ($scope.localData) {
-                        var searchFields = $scope.searchFields.split(",");
+                    if ($scope.filteredResults) {
 
                         var matches = [];
 
-                        for (var i = 0; i < $scope.localData.length; i++) {
+
+                        for (var i = 0; i < $scope.filteredResults.length; i++) {
                             var match = false;
+                            var searchString = '';
 
-                            for (var s = 0; s < searchFields.length; s++) {
-                                var evalStr = 'match = match || ($scope.localData[i].' + searchFields[s] + '.toLowerCase().indexOf("' + str.toLowerCase() + '") >= 0)';
-                                eval(evalStr);
+                            for(var j = 0; j < searchFields.length; j++){
+                                searchString += eval('$scope.filteredResults[i].' + searchFields[j]) + ' ';
                             }
-
-                            if (match) {
-                                matches[matches.length] = $scope.localData[i];
+                            if (searchString.toLowerCase().search(str.toLowerCase()) != -1) {
+                                matches[matches.length] = $scope.filteredResults[i];
                             }
                         }
 
                         $scope.searching = false;
                         $scope.processResults(matches);
                         $scope.$apply();
-
-
-                    } else {
-                        $http.get($scope.url + str, {}).
-                            success(function(responseData, status, headers, config) {
-                                $scope.searching = false;
-                                $scope.processResults(responseData);
-                            }).
-                            error(function(data, status, headers, config) {
-                                console.log("error");
-                            });
                     }
                 }
 
             }
 
-            $scope.hoverRow = function(index) {
-                $scope.currentIndex = index;
+            $scope.filter = function(){
+                if($scope.filterStr.length > 0){
+                    $timeout(function(){
+                        $scope.search($scope.filterStr,["company"]);
+                    },1);
+                }
+                else
+                {
+                    $scope.companies = [];
+                }
+
             }
+
+            function filterCompanies(companies){
+                // init filteredResults if Necessary
+                $scope.filteredResults = $scope.filteredResults || $scope.localData;
+                if (companies) {
+
+                    var results = [];
+
+                    for (var i = 0; i < $scope.filteredResults.length; i++) {
+                        var match = false;
+                        var matchString = 'match = match ||';
+
+                        for(var j = 0; j < companies.length; j++){
+                            match = match || $scope.filteredResults[i].company == companies[j].company;
+                            //matchString += eval('$scope.filteredResults[i].company') + ' == ' + companies[j].company + ' ||' ;
+                        }
+
+                        if(match){
+                            results.push($scope.filteredResults[i]);
+                        }
+                    }
+
+                    $scope.searching = false;
+                    $scope.filteredResults = results;
+
+
+                }else{
+                    $scope.filteredResults = $scope.localData;
+                }
+                }
+
+
+            $scope.toggle = function (company) {
+                if(!$scope.selectedCompanies)
+                {
+                    $scope.selectedCompanies = [];
+                }
+
+                var i = $scope.selectedCompanies.indexOf(company)
+                if(i > 0){
+                    $scope.selectedCompanies.splice(i,1);
+                    filterCompanies($scope.selectedCompanies);
+                }
+                else
+                {
+                    $scope.selectedCompanies.push(company);
+                    filterCompanies($scope.selectedCompanies);
+                }
+            }
+
+
 
             $scope.keyPressed = function(event) {
                 if (!(event.which == 38 || event.which == 40 || event.which == 13)) {
@@ -168,7 +180,7 @@ angular.module('searchbox')
                             $scope.searching = true;
 
                             $scope.searchTimer = setTimeout(function() {
-                                $scope.searchTimerComplete($scope.searchStr);
+                                $scope.search($scope.searchStr, $scope.searchFields.split(","));
                             }, $scope.pause);
                         }
 
@@ -180,16 +192,36 @@ angular.module('searchbox')
                 }
             }
 
-            $scope.selectResult = function(result) {
-                $scope.searchStr = result.title;
-                $scope.selectedObject = result;
-                $scope.showDropdown = false;
+            $scope.selectCompany = function(company) {
+                console.log(company);
+                $scope.selectedObject = company;
                 $scope.results = [];
                 //$scope.$apply();
+            }
+
+            $scope.selectPerson = function(person) {
+                console.log(person);
+                $scope.selectedObject = person;
+                $scope.results = [];
+                //$scope.$apply();
+            }
+
+            $scope.openFilter = function(){
+                $scope.filterOpen = !$scope.filterOpen;
             }
         },
 
         link: function($scope, elem, attrs, ctrl) {
+
+            elem.find('a').bind('click', function(a,b){
+                if($scope.filterOpen){
+                    angular.element(a.currentTarget).addClass('filter-active')
+                }
+                else if(a.currentTarget.classList.contains('filter-active') > 0)
+                {
+                    angular.element(a.currentTarget).removeClass('filter-active')
+                }
+            })
 
             elem.bind("keyup", function (event) {
                 if(event.which === 40) {

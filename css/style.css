@@ -1,3 +1,12 @@
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
 body {
   padding: 50px;
   font-family: 'Open Sans', sans-serif;
@@ -22,7 +31,7 @@ body {
   border: solid #000000 1px;
 }
 .angucomplete-holder {
-  min-width: 480px;
+  width: 80%;
 }
 .angucomplete-row:hover {
   background-color: lightblue;
@@ -31,11 +40,14 @@ body {
 }
 #ex1_value {
   padding: 10px;
-  min-width: 480px;
+  min-width: 280px;
+  width: 100%;
 }
 #ex1_dropdown {
-  border: 2px inset;
-  border-top: none;
+  border: 1px solid #ccc;
+  border-top-color: #d9d9d9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 10px;
 }
 .tag {
@@ -44,4 +56,36 @@ body {
 .tag:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+#filter {
+  background-color: #eee;
+  width: 200px;
+  max-height: 185px;
+  overflow: auto;
+  border: solid 1px #ccc;
+  border-top: none;
+}
+#filter #companyFilter {
+  width: 96%;
+  margin: 2%;
+}
+#filter .form-group {
+  margin: 10px;
+  margin-right: 0px;
+}
+#filter .form-group input[type="checkbox"] {
+  height: auto;
+  margin: 0px;
+}
+.full-width {
+  width: 100%;
+}
+.input-group a {
+  cursor: pointer;
+}
+.input-group a:hover {
+  background-color: #e6e6e6;
+}
+.filter-active {
+  border-bottom-left-radius: 0;
 }
