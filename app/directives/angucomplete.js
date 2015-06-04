@@ -112,23 +112,22 @@ angular.module('searchbox')
             }
 
             function filterCompanies(companies){
-                // init filteredResults if Necessary
-                $scope.filteredResults = $scope.filteredResults || $scope.localData;
-                if (companies) {
+
+                if (companies.length > 0) {
 
                     var results = [];
 
-                    for (var i = 0; i < $scope.filteredResults.length; i++) {
+                    for (var i = 0; i < $scope.localData.length; i++) {
                         var match = false;
                         var matchString = 'match = match ||';
 
                         for(var j = 0; j < companies.length; j++){
-                            match = match || $scope.filteredResults[i].company == companies[j].company;
+                            match = match || $scope.localData[i].company == companies[j].company;
                             //matchString += eval('$scope.filteredResults[i].company') + ' == ' + companies[j].company + ' ||' ;
                         }
 
                         if(match){
-                            results.push($scope.filteredResults[i]);
+                            results.push($scope.localData[i]);
                         }
                     }
 
@@ -149,12 +148,14 @@ angular.module('searchbox')
                 }
 
                 var i = $scope.selectedCompanies.indexOf(company)
-                if(i > 0){
+                if(i > -1){
+                    company.checked = false;
                     $scope.selectedCompanies.splice(i,1);
                     filterCompanies($scope.selectedCompanies);
                 }
                 else
                 {
+                    company.checked = true;
                     $scope.selectedCompanies.push(company);
                     filterCompanies($scope.selectedCompanies);
                 }
@@ -213,15 +214,16 @@ angular.module('searchbox')
 
         link: function($scope, elem, attrs, ctrl) {
 
-            elem.find('a').bind('click', function(a,b){
+            $scope.$watch('filterOpen', function(){
+                var a = angular.element('a.input-group-addon');
                 if($scope.filterOpen){
-                    angular.element(a.currentTarget).addClass('filter-active')
+                    a.addClass('filter-active')
                 }
-                else if(a.currentTarget.classList.contains('filter-active') > 0)
+                else if(a.hasClass('filter-active') > 0)
                 {
-                    angular.element(a.currentTarget).removeClass('filter-active')
+                    a.removeClass('filter-active')
                 }
-            })
+            });
 
             elem.bind("keyup", function (event) {
                 if(event.which === 40) {

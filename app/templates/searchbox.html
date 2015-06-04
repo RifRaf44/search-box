@@ -1,8 +1,19 @@
 <div class="angucomplete-holder flexcontainer center">
     <div class="full-width">
         <div class="input-group">
-            <a class="input-group-addon" ng-click="filterOpen = !filterOpen"><i class="fa fa-filter"></i></a>
-            <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}} form-control"  ng-keyup="keyPressed($event)"  />
+            <a class="input-group-addon" ng-click="filterOpen = !filterOpen; showDropdown = false"><i class="fa fa-filter"></i></a>
+            <div class="input-lookalike">
+                <ul class="tag-wrapper">
+                    <li ng-repeat="selectedCompany in selectedCompanies" >
+                        <div class="tag" ng-click="toggle(selectedCompany)">
+                            {{selectedCompany.company}} <i class="fa fa-times"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}} form-control" ng-focus="filterOpen = false"  ng-keyup="keyPressed($event)"  />
+                    </li>
+                </ul>
+            </div>
         </div>
         <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">
             <div class="angucomplete-searching" ng-show="searching">Searching...</div>
@@ -11,16 +22,16 @@
             <!--<div class="angucomplete-row" ng-repeat="company in companies" ng-mousedown="selectCompany(company)">-->
                 <!--<div>{{company.company}}</div>-->
             <!--</div>-->
-            <div class="tag" ng-click="selectTag('people')" ng-show="people.length > 0">People</div>
+            <!--<div class="tag" ng-click="selectTag('people')" ng-show="people.length > 0">People</div>-->
             <div class="angucomplete-row" ng-repeat="person in people" ng-mousedown="selectPerson(person)">
                 <div>{{person.first_name + ' ' + person.last_name}}</div>
             </div>
         </div>
         <div id="filter" ng-show="filterOpen">
-            <input id="companyFilter" type="text" placeholder="company" ng-model="filterStr"/>
+            <input id="companyFilter" type="text" placeholder="Company" ng-model="filterStr"/>
             <div ng-repeat="company in companies | filter:{company: filterStr}" class="form-inline form-group" >
-                <input id="company_{{company.id}}" ng-change="toggle(company)" ng-model="company.checked" type="checkbox" class="form-control"/>
-                <label for="company_{{company.id}}">{{company.company}}</label>
+                <input id="company_{{company.companyId}}" ng-change="toggle(company)" ng-model="company.checked" type="checkbox" class="form-control"/>
+                <label for="company_{{company.companyId}}">{{company.company}}</label>
             </div>
         </div>
     </div>
