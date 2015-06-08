@@ -46,8 +46,11 @@
             Filters
             <div ng-repeat="myFilter in myFilters" class="customFilter pointer">
                 <div  ng-click="selectFilter(myFilter)">
-                    {{myFilter.name}}
+                    <i>{{myFilter.name}}</i>
                 </div>
+            </div>
+            <div ng-show="myFilters.length == 0">
+                <i>No custom filters</i>
             </div>
         </div>
     </div>

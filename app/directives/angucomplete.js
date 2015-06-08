@@ -206,6 +206,8 @@ angular.module('searchbox')
             $scope.selectPerson = function(person) {
                 console.log(person);
                 $scope.selectedObject = person;
+                $scope.searchStr = ""
+                $scope.showDropdown = false;
                 $scope.results = [];
                 //$scope.$apply();
             }
