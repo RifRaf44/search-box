@@ -215,8 +215,11 @@ angular.module('searchbox')
             }
 
             $scope.selectFilter = function(filter){
+                for(var j=0; j < $scope.selectedCompanies.length; j++ ){
+                    $scope.selectedCompanies[j].checked = false;
+                }
                 $scope.selectedCompanies = [];
-                for(var i=0; i< filter.content.length; i++){
+                for(var i=0; i < filter.content.length; i++){
                     $scope.toggle(filter.content[i]);
                 }
             }

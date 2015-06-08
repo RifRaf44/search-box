@@ -79,8 +79,8 @@
       <file leaf-file-name="angucomplete.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/directives/angucomplete.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.70581776" vertical-offset="2400" max-vertical-offset="5559">
-              <caret line="179" column="28" selection-start-line="179" selection-start-column="28" selection-end-line="179" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.6311745" vertical-offset="3131" max-vertical-offset="5610">
+              <caret line="218" column="64" selection-start-line="218" selection-start-column="64" selection-end-line="218" selection-end-column="64" />
               <folding />
             </state>
           </provider>
@@ -516,8 +516,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/directives/angucomplete.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.70581776" vertical-offset="2400" max-vertical-offset="5559">
-          <caret line="179" column="28" selection-start-line="179" selection-start-column="28" selection-end-line="179" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.6311745" vertical-offset="3131" max-vertical-offset="5610">
+          <caret line="218" column="64" selection-start-line="218" selection-start-column="64" selection-end-line="218" selection-end-column="64" />
           <folding />
         </state>
       </provider>
