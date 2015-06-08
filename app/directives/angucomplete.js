@@ -5,7 +5,7 @@
  */
 
 angular.module('searchbox')
-    .directive('angucomplete', function ($parse, $http, $timeout) {
+    .directive('angucomplete', function ($parse, $http, $timeout, ModalService) {
     return {
         restrict: 'EA',
         scope: {
@@ -32,7 +32,15 @@ angular.module('searchbox')
             $scope.searching = false;
             $scope.pause = 500;
             $scope.minLength = 3;
-            $scope.filterOpen;
+            $scope.myFilters = []
+            $scope.filterOpen = false;
+
+            init()
+            function init(){
+                if(localStorage["myFilters"]){
+                    $scope.myFilters = JSON.parse(localStorage["myFilters"]);
+                }
+            }
 
             if ($scope.minLengthUser && $scope.minLengthUser != "") {
                 $scope.minLength = $scope.minLengthUser;
@@ -47,11 +55,6 @@ angular.module('searchbox')
                     $scope.results = [];
                     // var companies = []
                     var people = [], calculations = [];
-
-                    //$scope.companies = responseData.uniqueObjects(["companyId"]);
-                    //from($scope.companies).take(4).each(function(obj){
-                    //    companies.push(obj);
-                    //});
 
                     from(responseData).take(7).each(function(obj){
                         people.push(obj);
@@ -185,7 +188,6 @@ angular.module('searchbox')
                             }, $scope.pause);
                         }
 
-
                     }
 
                 } else {
@@ -210,6 +212,48 @@ angular.module('searchbox')
             $scope.openFilter = function(){
                 $scope.filterOpen = !$scope.filterOpen;
             }
+
+            $scope.selectFilter = function(filter){
+                $scope.selectedCompanies = filter.content;
+            }
+
+            $scope.saveSelected = function(){
+
+                ModalService.showModal({
+                    templateUrl: "app/templates/modal.html",
+                    controller: "ModalController"
+                }).then(function(modal) {
+
+                    //it's a bootstrap element, use 'modal' to show it
+                    modal.element.modal();
+                    modal.close.then(function(result) {
+                        if(result.save){
+
+                        var myFilters = localStorage["myFilters"];
+
+                        var saveObj = {
+                            name: result.data,
+                            content: $scope.selectedCompanies
+                        }
+
+                        if(!myFilters){
+                            localStorage["myFilters"] = JSON.stringify([saveObj]);
+                        }
+                        else
+                        {
+                            JSON.parse(myFilters).push(saveObj)
+                            localStorage["myFilters"] = JSON.stringify(myFilters);
+                        }
+                        $scope.myFilters.push(saveObj);
+
+                        }
+                    });
+                });
+
+            }
+
+
+
         },
 
         link: function($scope, elem, attrs, ctrl) {
@@ -219,8 +263,9 @@ angular.module('searchbox')
                 if($scope.filterOpen){
                     a.addClass('filter-active')
                 }
-                else if(a.hasClass('filter-active') > 0)
+                else
                 {
+                    $scope.myFilterOpen = false
                     a.removeClass('filter-active')
                 }
             });

@@ -8,7 +8,7 @@ html {
   box-sizing: inherit;
 }
 body {
-  padding: 50px;
+  padding: 20px;
   font-family: 'Open Sans', sans-serif;
   font-weight: lighter;
   color: #8A4F76;
@@ -18,16 +18,6 @@ label {
 }
 .container {
   margin: auto;
-}
-.flexcontainer {
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-}
-.flexcontainer.center {
-  align-items: center;
-  justify-content: center;
 }
 .box {
   background-color: orange;
@@ -48,37 +38,49 @@ label {
   width: 100%;
 }
 #ex1_dropdown {
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   border-top-color: #d9d9d9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 10px;
 }
 #filter {
-  background-color: #eee;
+  background-color: #eeeeee;
   width: 200px;
   max-height: 185px;
   overflow: auto;
-  border: solid 1px #ccc;
+  border: solid 1px #cccccc;
   border-top: none;
 }
 #filter #companyFilter {
-  width: 96%;
-  margin: 2%;
+  width: 170px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 10px;
 }
 #filter input {
   padding-left: 5px;
   padding-right: 5px;
   border-radius: 4px;
-  border: solid 1px #ccc;
+  border: solid 1px #cccccc;
 }
 #filter .form-group {
   margin: 10px;
+  padding-bottom: 5px;
   margin-right: 0px;
+  border-bottom: solid 1px #ddd;
 }
 #filter .form-group input[type="checkbox"] {
   height: auto;
   margin: 0px;
+}
+.stack {
+  width: 200px;
+  padding: 5px;
+  padding-left: 10px;
+  background-color: #f6f6f6;
+  border: solid 1px #cccccc;
+  border-top: none;
 }
 .full-width {
   width: 100%;
@@ -124,4 +126,101 @@ label {
 .tag-wrapper li:last-child {
   float: none;
   overflow: hidden;
+}
+.pointer {
+  cursor: pointer;
+}
+.flexcontainer {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+}
+.flexcontainer.center {
+  align-items: center;
+  justify-content: center;
+}
+.flexcontainer.left {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.flex-1 {
+  -webkit-flex: 1 0 0;
+  flex: 1 0 0;
+}
+.flex-2 {
+  -webkit-flex: 2 0 0;
+  flex: 2 0 0;
+}
+.verticalCenter {
+  align-self: center;
+}
+.customFilter:hover {
+  background-color: #B386E8;
+  color: #FFF;
+}
+.angucomplete-holder .form-inline .form-group {
+  display: inline-block;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+.angucomplete-holder .form-inline .form-control {
+  display: inline-block;
+  width: auto;
+  vertical-align: middle;
+}
+.angucomplete-holder .form-inline .form-control-static {
+  display: inline-block;
+}
+.angucomplete-holder .form-inline .input-group {
+  display: inline-table;
+  vertical-align: middle;
+}
+.angucomplete-holder .form-inline .input-group .input-group-addon,
+.angucomplete-holder .form-inline .input-group .input-group-btn,
+.angucomplete-holder .form-inline .input-group .form-control {
+  width: auto;
+}
+.angucomplete-holder .form-inline .input-group > .form-control {
+  width: 100%;
+}
+.angucomplete-holder .form-inline .control-label {
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+.angucomplete-holder .form-inline .radio,
+.angucomplete-holder .form-inline .checkbox {
+  display: inline-block;
+  margin-top: 0;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+.angucomplete-holder .form-inline .radio label,
+.angucomplete-holder .form-inline .checkbox label {
+  padding-left: 0;
+}
+.angucomplete-holder .form-inline .radio input[type="radio"],
+.angucomplete-holder .form-inline .checkbox input[type="checkbox"] {
+  position: relative;
+  margin-left: 0;
+}
+.angucomplete-holder .form-inline .has-feedback .form-control-feedback {
+  top: 0;
+}
+@media (max-width: 480px) {
+  .angucomplete-holder {
+    width: 100%;
+  }
+  body {
+    padding: 0px;
+  }
+  #filter {
+    width: 100%;
+  }
+  #filter #companyFilter {
+    width: 95%;
+  }
+  .stack {
+    width: 100%;
+  }
 }

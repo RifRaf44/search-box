@@ -34,6 +34,20 @@
                 <label for="company_{{company.companyId}}">{{company.company}}</label>
             </div>
         </div>
+        <div ng-show="filterOpen" class="stack flexcontainer" >
+            <div class="pointer flex-2 verticalCenter" ng-click="myFilterOpen = !myFilterOpen">
+                Saved filters <i class="fa fa-sort-desc"></i>
+            </div>
+            <div class="flex-1 flexcontainer left" >
+                <button class="btn btn-default" ng-click="saveSelected()">Save</button>
+            </div>
+        </div>
+        <div class="stack" ng-show="myFilterOpen">
+            Filters
+            <div ng-repeat="filter in myFilters" class="customFilter pointer" ng-click="selectFilter(filter)">
+                {{filter.name}}
+            </div>
+        </div>
     </div>
 
 </div>
