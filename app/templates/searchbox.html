@@ -44,8 +44,10 @@
         </div>
         <div class="stack" ng-show="myFilterOpen">
             Filters
-            <div ng-repeat="filter in myFilters" class="customFilter pointer" ng-click="selectFilter(filter)">
-                {{filter.name}}
+            <div ng-repeat="myFilter in myFilters" class="customFilter pointer">
+                <div  ng-click="selectFilter(myFilter)">
+                    {{myFilter.name}}
+                </div>
             </div>
         </div>
     </div>

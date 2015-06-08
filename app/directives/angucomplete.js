@@ -150,6 +150,13 @@ angular.module('searchbox')
                     $scope.selectedCompanies = [];
                 }
 
+                if($scope.companies.indexOf(company) < 0){
+                    var result = $scope.companies.filter(function( obj ) {
+                        return obj.companyId == company.companyId;
+                    });
+                    company = result[0];
+                }
+
                 var i = $scope.selectedCompanies.indexOf(company)
                 if(i > -1){
                     company.checked = false;
@@ -195,12 +202,6 @@ angular.module('searchbox')
                 }
             }
 
-            $scope.selectCompany = function(company) {
-                console.log(company);
-                $scope.selectedObject = company;
-                $scope.results = [];
-                //$scope.$apply();
-            }
 
             $scope.selectPerson = function(person) {
                 console.log(person);
@@ -214,7 +215,10 @@ angular.module('searchbox')
             }
 
             $scope.selectFilter = function(filter){
-                $scope.selectedCompanies = filter.content;
+                $scope.selectedCompanies = [];
+                for(var i=0; i< filter.content.length; i++){
+                    $scope.toggle(filter.content[i]);
+                }
             }
 
             $scope.saveSelected = function(){
@@ -241,8 +245,9 @@ angular.module('searchbox')
                         }
                         else
                         {
-                            JSON.parse(myFilters).push(saveObj)
-                            localStorage["myFilters"] = JSON.stringify(myFilters);
+                            var tempArr = JSON.parse(myFilters);
+                            tempArr.push(saveObj)
+                            localStorage["myFilters"] = JSON.stringify(tempArr);
                         }
                         $scope.myFilters.push(saveObj);
 
